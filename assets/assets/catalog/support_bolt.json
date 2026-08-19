@@ -1,0 +1,95 @@
+{
+ "schema": "iso-draw/support-bolt/1",
+ "note": "支持間隔・吊りボルト径・フランジボルト・ガスケットの一次データ。Vault の Knowledge/haikan-shijizai-bolt-packing-data.md から転記。表に無いサイズは書かない（推測で埋めない）。",
+ "sources": {
+  "supportSpacing": "公共建築工事標準仕様書（機械設備工事編）令和7年版 表2.2.20",
+  "flangeBolt": "JIS B2220 フランジ寸法別ボルト・ナット適合表",
+  "gasket": "JIS B2404 管フランジ用ガスケット（リングガスケット F.R.）"
+ },
+
+ "supportSpacing": {
+  "note": "吊り金物による吊り／形鋼振れ止め支持の最大間隔(mm)。maxSize=null は「それ以上すべて」。",
+  "steel": {
+   "label": "鋼管・ステンレス鋼管",
+   "hanger": [
+    {"maxSize": 100, "mm": 2000},
+    {"maxSize": null, "mm": 3000}
+   ],
+   "sway": [
+    {"maxSize": 40, "mm": null},
+    {"maxSize": 100, "mm": 8000},
+    {"maxSize": null, "mm": 12000}
+   ]
+  },
+  "plastic": {
+   "label": "塩ビ・耐火二層・PE",
+   "hanger": [
+    {"maxSize": 80, "mm": 1000},
+    {"maxSize": null, "mm": 2000}
+   ],
+   "sway": [
+    {"maxSize": 20, "mm": null},
+    {"maxSize": 40, "mm": 6000},
+    {"maxSize": 100, "mm": 8000},
+    {"maxSize": null, "mm": 12000}
+   ]
+  }
+ },
+
+ "hangerBoltDiameter": {
+  "note": "鋼管・ステンレスの横走り（表2.2.20 注4）",
+  "steel": [
+   {"maxSize": 100, "bolt": "M10"},
+   {"maxSize": 200, "bolt": "M12"},
+   {"maxSize": null, "bolt": "M16"}
+  ]
+ },
+
+ "straightRunBracingMm": 25000,
+
+ "flangeBolt": {
+  "note": "呼び径×圧力クラスごとの本数・ねじ径・長さ(mm)。**表に載っている呼び径だけ**。塩ビTSフランジは長さが鋼製と違う（10K 50Aで鋼製M16×60に対しTSはM16×70）ので、穴数だけ共通で使い、長さは継手側の指定に従う。",
+  "5K": {
+   "25": {"count": 4, "thread": "M10", "lengthMm": 50},
+   "50": {"count": 4, "thread": "M12", "lengthMm": 55},
+   "80": {"count": 4, "thread": "M16", "lengthMm": 55},
+   "100": {"count": 8, "thread": "M16", "lengthMm": 60},
+   "150": {"count": 8, "thread": "M16", "lengthMm": 65},
+   "200": {"count": 8, "thread": "M20", "lengthMm": 75}
+  },
+  "10K": {
+   "25": {"count": 4, "thread": "M16", "lengthMm": 55},
+   "50": {"count": 4, "thread": "M16", "lengthMm": 60},
+   "80": {"count": 8, "thread": "M16", "lengthMm": 65},
+   "100": {"count": 8, "thread": "M16", "lengthMm": 65},
+   "150": {"count": 8, "thread": "M20", "lengthMm": 75},
+   "200": {"count": 12, "thread": "M20", "lengthMm": 75}
+  },
+  "20K": {
+   "25": {"count": 4, "thread": "M16", "lengthMm": 60},
+   "50": {"count": 8, "thread": "M16", "lengthMm": 65},
+   "80": {"count": 8, "thread": "M20", "lengthMm": 80},
+   "100": {"count": 8, "thread": "M20", "lengthMm": 85},
+   "150": {"count": 12, "thread": "M22", "lengthMm": 95},
+   "200": {"count": 12, "thread": "M22", "lengthMm": 100}
+  }
+ },
+
+ "gasket": {
+  "note": "リングガスケット(F.R.) 内径/外径(mm)。65Aの内径は84（旧規格77は括弧書き）。",
+  "innerDiameter": {
+   "25": 35,
+   "50": 61,
+   "65": 84,
+   "80": 90,
+   "100": 115,
+   "150": 167,
+   "200": 218
+  },
+  "outerDiameter": {
+   "5K": {"25": 65, "50": 93, "80": 129, "100": 149, "150": 214, "200": 260},
+   "10K": {"25": 74, "50": 104, "80": 134, "100": 159, "150": 220, "200": 270},
+   "20K": {"25": 74, "50": 104, "80": 140, "100": 165, "150": 238, "200": 283}
+  }
+ }
+}
