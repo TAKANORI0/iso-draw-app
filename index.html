@@ -25,7 +25,7 @@
     #boot {
       position: fixed; inset: 0; display: flex; align-items: center;
       justify-content: center; color: #94A3B8;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 15px;
     }
   </style>
 </head>
@@ -39,19 +39,31 @@
       navigator.storage.persist();
     }
 
-    // オフライン用の Service Worker。
-    // Flutter 生成の flutter_service_worker.js は自分を unregister するだけの
-    // スタブなので登録しない。キャッシュは sw.js が持つ。
+    // ------------------------------------------------------------------
+    // オフライン用 Service Worker の登録と更新
+    //
+    // **必ず毎回 register() を呼ぶ。**
+    // 「既に動いていれば呼ばない」にしたら、更新のきっかけごと消えて
+    // 端末が古い版を掴んだまま何日も直らなくなった（2026-08-19 実機）。
+    // 圏外では失敗するが、それは catch して黙らせるだけでよい。
+    //
+    // 新しい SW が有効になったら **その場で読み込み直す**。
+    // 待っていると、直したはずの画面が現場に出てこない。
+    // ------------------------------------------------------------------
     if ('serviceWorker' in navigator) {
+      var reloading = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (reloading) return;
+        reloading = true;
+        window.location.reload();
+      });
+
       window.addEventListener('load', function () {
-        // 既に SW が動いているなら register() を呼ばない。
-        // 圏外で呼ぶと sw.js の取得に失敗し、起動のたびに赤いエラーが出る
-        // （動作には影響しないが、現場で「壊れている」と思わせる）。
-        // 更新はブラウザが画面遷移のたびに自動で sw.js を見に行くので、
-        // ここで呼ばなくても電波がある時に新しい版へ入れ替わる。
-        if (navigator.serviceWorker.controller) return;
-        navigator.serviceWorker.register('sw.js').catch(function (e) {
-          console.warn('Service Worker の登録に失敗しました（オフラインでは開けません）', e);
+        navigator.serviceWorker.register('sw.js').then(function (reg) {
+          // 起動のたびに新しい版が無いか確かめる（電波がある時だけ成功する）
+          reg.update().catch(function () {});
+        }).catch(function () {
+          // 圏外。すでに入っている版で動くので何もしない
         });
       });
     }
