@@ -16,7 +16,7 @@
 //
 // CACHE 名は配信のたびに tools/deploy_pages.ps1 が打ち替える。
 
-const CACHE = 'iso-draw-20260819-2330';
+const CACHE = 'iso-draw-20260820-0619';
 
 /// 電波があるとき、ネットの応答をこの時間まで待つ（超えたらキャッシュを返す）
 const NETWORK_TIMEOUT_MS = 3000;
