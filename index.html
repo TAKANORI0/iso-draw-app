@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <base href="/iso-draw-app/">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="description" content="現場でアイソメ図を描き、寸法と切寸を出して SketchUp へ渡す。完全オフライン。">
+  <meta name="theme-color" content="#0B1220">
+
+  <!-- ホーム画面に入れたときの見え方（iOS/Android 共通） -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="現場アイソメ">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <title>現場アイソメ</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #0B1220; }
+    /* 起動までの数秒が真っ白だと「壊れた」と思われるので、下地と表示を出す */
+    #boot {
+      position: fixed; inset: 0; display: flex; align-items: center;
+      justify-content: center; color: #94A3B8;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="boot">現場アイソメを読み込んでいます…</div>
+
+  <script>
+    // 端末内のデータ（図面）をブラウザに消させない。
+    // 容量が逼迫したとき IndexedDB は黙って捨てられることがある。
+    if (navigator.storage && navigator.storage.persist) {
+      navigator.storage.persist();
+    }
+
+    // オフライン用の Service Worker。
+    // Flutter 生成の flutter_service_worker.js は自分を unregister するだけの
+    // スタブなので登録しない。キャッシュは sw.js が持つ。
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        // 既に SW が動いているなら register() を呼ばない。
+        // 圏外で呼ぶと sw.js の取得に失敗し、起動のたびに赤いエラーが出る
+        // （動作には影響しないが、現場で「壊れている」と思わせる）。
+        // 更新はブラウザが画面遷移のたびに自動で sw.js を見に行くので、
+        // ここで呼ばなくても電波がある時に新しい版へ入れ替わる。
+        if (navigator.serviceWorker.controller) return;
+        navigator.serviceWorker.register('sw.js').catch(function (e) {
+          console.warn('Service Worker の登録に失敗しました（オフラインでは開けません）', e);
+        });
+      });
+    }
+
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('boot');
+      if (boot) boot.remove();
+    });
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
