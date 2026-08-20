@@ -1,9 +1,10 @@
 {
  "schema": "iso-draw/fitting-catalog/1",
  "source": "pipe-cut-calc/配管切寸法計算.html (JIS K6743 / K6739 / B2301 / B2311 / B2220)",
- "generatedAt": "2026-08-18",
+ "generatedAt": "2026-08-20",
  "notes": {
   "z": "芯(基準)〜差し込まれたパイプ先端。切寸=芯々-Z左-Z右",
+  "manualZ": "true なら寸法表を持っていない継手。選べるが控除は手入力になる",
   "ins": "差込み代/ねじ込み代 ℓ。芯〜端面 = Z + ℓ",
   "weld": "突合せ溶接は ins=null（差込み無し）。ルート間隔は WPS 依存で規格値なし＝案件ごとに入力"
  },
@@ -697,6 +698,14 @@
        "zb": 141
       }
      }
+    },
+    {
+     "id": "flg",
+     "name": "VUフランジ",
+     "kind": "flange",
+     "ftype": "socket",
+     "glyph": "flg",
+     "manualZ": true
     }
    ]
   },
@@ -1191,6 +1200,21 @@
        "ins": 20
       }
      }
+    },
+    {
+     "id": "union",
+     "name": "ユニオン (U)",
+     "kind": "straight",
+     "glyph": "union",
+     "manualZ": true
+    },
+    {
+     "id": "flgLoose",
+     "name": "遊合フランジ",
+     "kind": "flange",
+     "ftype": "thread",
+     "glyph": "flg",
+     "manualZ": true
     }
    ]
   },
