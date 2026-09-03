@@ -16,7 +16,7 @@
 //
 // CACHE 名は配信のたびに tools/deploy_pages.ps1 が打ち替える。
 
-const CACHE = 'iso-draw-20260820-1601';
+const CACHE = 'iso-draw-20260904-0831';
 
 /// 電波があるとき、ネットの応答をこの時間まで待つ（超えたらキャッシュを返す）
 const NETWORK_TIMEOUT_MS = 3000;
@@ -56,6 +56,10 @@ const CORE = [
   './assets/assets/fonts/Roboto-Regular.ttf',
   './assets/assets/fonts/Roboto-Medium.ttf',
   './assets/assets/fonts/Roboto-Bold.ttf',
+
+  // 日本語フォント。無いと圏外で文字が全部 □ になる（2026-09-04 実測）
+  './assets/assets/fonts/NotoSansJP-Regular.ttf',
+  './assets/assets/fonts/NotoSansJP-Bold.ttf',
 
   // 継手・支持金物のカタログ。これが無いと寸法が引けない
   './assets/assets/catalog/fittings.json',
